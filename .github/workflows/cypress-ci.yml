@@ -36,21 +36,4 @@ jobs:
       - name: Run tests and generate report
         run: |
           npm run limpiar-reporte
-          npm run ejecutar-pruebas || echo "Cypress tests failed!"
-          npm run generar-reporte
-          npm run abrir-report
-
-      - name: Upload Allure results
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-results
-          path: allure-results/
-
-      - name: Generate Allure Report
-        run: allure generate allure-results --clean -o allure-report
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-report
-          path: allure-report/
+          npm run test
