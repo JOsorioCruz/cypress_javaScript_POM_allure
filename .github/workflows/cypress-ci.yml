@@ -25,7 +25,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install --save-dev rimraf
 
       - name: Install Allure
         run: |
