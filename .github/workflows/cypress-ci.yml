@@ -60,3 +60,5 @@ jobs:
           path: |
             cypress/screenshots
             cypress/videos
+            allure-results
+            allure-report
