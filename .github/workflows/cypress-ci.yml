@@ -51,3 +51,12 @@ jobs:
         with:
           name: allure-report
           path: allure-report/
+
+      - name: Upload Cypress Videos and Screenshots
+        if: always() # This ensures that even if the tests fail, the artifacts are uploaded
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-artifacts
+          path: |
+            cypress/screenshots
+            cypress/videos
