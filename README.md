@@ -3,6 +3,28 @@
 
 Este proyecto utiliza Cypress, Allure, JavaScript y el patrón de diseño Page Object Model (POM) para automatizar el proceso de compra en una tienda en línea, incluyendo acciones como autenticación, navegación por el catálogo, registro de usuarios, y finalización de la compra.
 
+## Configuración en Windows
+
+### Prerequisitos
+1. Tener Node.js instalado
+2. Tener Java JDK instalado (requerido para Allure)
+3. Configurar la variable de entorno JAVA_HOME
+
+### Instalación de Dependencias para Allure
+
+1. Instalar Rimraf (utilidad para eliminar directorios):
+```bash
+npm install rimraf --save-dev
+````
+2. Instalar Allure Command Line globalmente:
+```bash
+npm install -g allure-commandline
+````
+3. Instalar Allure Command Line como dependencia de desarrollo:
+```bash
+npm install allure-commandline --save-dev
+````
+
 ## Estructura del Proyecto
 
 ````
@@ -72,12 +94,14 @@ Este proyecto utiliza Cypress, Allure, JavaScript y el patrón de diseño Page O
 Cada uno de estos scripts está diseñado para automatizar y optimizar el proceso de pruebas, permitiéndote ejecutar, limpiar y generar reportes con facilidad desde la consola.
 ```json
  {
-  "limpiar-reporte": "rimraf ./allure-report && rimraf ./allure-results",
-  "ejecutar-pruebas": "cypress run --env allure=true",
-  "generar-reporte": "allure generate allure-results -o allure-report --clean",
-  "abrir-report": "allure open",
-  "test": "npm run limpiar-reporte && npm run ejecutar-pruebas; npm run generar-reporte && npm run abrir-report",
-  "cy:parallel": "npm run limpiar-reporte && cypress-parallel -s ejecutar-pruebas -t 2 -d ./cypress/e2e/tests; npm run generar-reporte"
+   "abrir-cypress": "npx cypress open",
+   "run-cypress": "npx cypress run",
+   "limpiar-reporte": "rimraf ./allure-report && rimraf ./allure-results",
+   "ejecutar-pruebas": "cypress run --env allure=true",
+   "generar-reporte": "allure generate ./allure-results --clean -o ./allure-report",
+   "abrir-report": "allure open",
+   "test": "npm run limpiar-reporte && npm run ejecutar-pruebas && npm run generar-reporte && npm run abrir-report",
+   "cy:parallel": "npm run limpiar-reporte && cypress-parallel -s ejecutar-pruebas -t 2 -d ./cypress/e2e/tests && npm run generar-reporte"
 }
 ```
 #  📫 Contacto

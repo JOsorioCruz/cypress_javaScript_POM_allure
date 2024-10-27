@@ -6,59 +6,45 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  cypress-run:
+    runs-on: ubuntu-22.04
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'  # Cambia la versión según necesites
-
-      - name: Install Java 1.8
-        uses: actions/setup-java@v3
-        with:
-          java-version: '8'
-          distribution: 'temurin'
+          node-version: '21.7.3'
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install --save-dev rimraf
+        run: npm install
 
-      - name: Install Allure
-        run: |
-          npm install -g allure-commandline --save-dev
+      - name: Limpiar directorio de resultados de Allure
+        run: rm -rf allure-results && mkdir -p allure-results
 
-      - name: Run tests and generate report
-        run: |
-          npm run test
+      - name: Ejecutar pruebas de Cypress con Allure Adapter
+        run: npx cypress run --env allure=true
 
-      - name: Upload Allure results
+      - name: Listar resultados de Allure
+        if: always()
+        run: ls -la ./allure-results
+
+      - name: Instalar Allure Commandline
+        if: always()
+        run: npm install allure-commandline --save-dev
+
+      - name: Generar reporte Allure como HTML estático
+        if: always()
+        run: npx allure generate ./allure-results --clean -o ./allure-report
+
+      - name: Listar reporte de Allure
+        if: always()
+        run: ls -la ./allure-report
+
+      - name: Subir reporte Allure
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: allure-results
-          path: allure-results/
-
-      - name: Generate Allure Report
-        run: allure generate allure-results --clean -o allure-report
-
-      - name: Upload Allure Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: allure-report
-          path: allure-report/
-
-      - name: Upload Cypress Videos and Screenshots
-        if: always() # This ensures that even if the tests fail, the artifacts are uploaded
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-artifacts
-          path: |
-            cypress/screenshots
-            cypress/videos
-            allure-results
-            allure-report
+          name: Allure Report
+          path: ./allure-report

@@ -4,22 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "limpiar-reporte": "rimraf ./allure-report && rimraf ./allure-results",
-    "ejecutar-pruebas": "cypress run --env allure=true",
-    "generar-reporte": "allure generate allure-results -o allure-report --clean",
-    "abrir-report": "allure open allure-report",
-    "test": "npm run limpiar-reporte && npm run ejecutar-pruebas && npm run generar-reporte",
-    "cy:parallel": "npm run limpiar-reporte && cypress-parallel -s ejecutar-pruebas -t 2 -d ./cypress/e2e/tests && npm run generar-reporte"
+  "abrir-cypress": "npx cypress open",
+  "run-cypress": "npx cypress run",
+  "limpiar-reporte": "rimraf ./allure-report && rimraf ./allure-results",
+  "ejecutar-pruebas": "cypress run --env allure=true",
+  "generar-reporte": "allure generate ./allure-results --clean -o ./allure-report",
+  "abrir-report": "allure open allure-report",
+  "test": "npm run limpiar-reporte ; npm run ejecutar-pruebas ; npm run generar-reporte ; npm run abrir-report",
+    "cy:parallel": "npm run limpiar-reporte && cypress-parallel --spec \"cypress/e2e/tests/*.cy.js\" --threads 2 && npm run generar-reporte"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "allure-commandline": "^2.31.0",
     "cypress": "^13.1.0",
-    "cypress-parallel": "^0.13.0"
+    "cypress-parallel": "^0.13.0",
+    "rimraf": "^6.0.1"
   },
   "dependencies": {
-    "@mmisty/cypress-allure-adapter": "^2.7.2",
-    "allure-commandline": "^2.22.1"
+    "@mmisty/cypress-allure-adapter": "^2.7.2"
   }
 }
